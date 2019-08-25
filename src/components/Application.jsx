@@ -9,13 +9,13 @@ class Application extends Component {
     posts: [],
   };
 
+
   componentDidMount = async() => {
     const snapshot = await firestore.collection('posts').get();
     const posts = snapshot.docs.map(collectIdsAndDocs);
 
     this.setState({ posts });
   }
-
 
   handleCreate = async post => {
     const { posts } = this.state;
@@ -28,13 +28,22 @@ class Application extends Component {
     this.setState({ posts: [newPost, ...posts] });
   };
 
+  handleRemove = async id => {
+    const allPosts = this.state.posts;
+
+    await firestore.doc(`/posts/${id}`).delete();
+
+    const posts = allPosts.filter(post => post.id !== id);
+    this.setState({ posts });
+  }
+
   render() {
     const { posts } = this.state;
 
     return (
       <main className="Application">
         <h1>Think Piece</h1>
-        <Posts posts={posts} onCreate={this.handleCreate} />
+        <Posts posts={posts} onCreate={this.handleCreate} onRemove={this.handleRemove}/>
       </main>
     );
   }
