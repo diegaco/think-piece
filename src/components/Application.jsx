@@ -22,21 +22,13 @@ class Application extends Component {
     this.unsuscribe();
   }
 
-  handleCreate = post => {
-    firestore.collection('posts').add(post);
-  };
-
-  handleRemove = id => {
-    firestore.doc(`/posts/${id}`).delete();
-  }
-
   render() {
     const { posts } = this.state;
 
     return (
       <main className="Application">
         <h1>Think Piece</h1>
-        <Posts posts={posts} onCreate={this.handleCreate} onRemove={this.handleRemove}/>
+        <Posts posts={posts} />
       </main>
     );
   }
