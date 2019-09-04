@@ -17,6 +17,48 @@ firebase.initializeApp(firebaseConfig);
 
 window.firebase = firebase; // only to play in browser
 
+export const createUserProfileDocument = async (user, additionalData) => {
+  if (!user) return;
+
+  // get a ref from db from user
+  const userRef = firestore.doc(`users/${user.uid}`);
+
+  // go and fetch data from that location
+  const snapshot = await userRef.get();
+
+  if (!snapshot.exists) {
+    const { displayName, email, photoUrl = '' } = user;
+    const createdAt = new Date();
+    try {
+      await userRef.set({
+        displayName,
+        email,
+        photoUrl,
+        createdAt,
+        ...additionalData,
+      })
+    } catch (error) {
+      console.error('Error creating User', error.message);
+    }
+  }
+
+  return getUserDocument(user.uid);
+};
+
+export const getUserDocument = async (uid) => {
+  if (!uid) return null;
+  try {
+    // const doc = await firestore.collection('users').doc(uid);
+    const doc = await firestore.doc(`users/${uid}`).get();
+    return {
+      uid,
+      ...doc.data()
+    }
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
 export const firestore = firebase.firestore();
 export const auth = firebase.auth();
 
