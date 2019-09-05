@@ -21,6 +21,7 @@ class Application extends Component {
     })
     this.unsuscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       const user = await createUserProfileDocument(userAuth)
+      console.log(user);
       this.setState({ user })
     })
   }
