@@ -7,18 +7,12 @@ import Posts from './Posts';
 
 class Application extends Component {
   state = {
-    posts: [],
     user: null,
   };
 
-  unsuscribeFromFirestore = null;
   unsuscribeFromAuth = null;
 
   componentDidMount = async() => {
-    this.unsuscribeFromFirestore = firestore.collection('posts').onSnapshot(snapshot => {
-      const posts = snapshot.docs.map(collectIdsAndDocs);
-      this.setState({ posts });
-    })
     this.unsuscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       const user = await createUserProfileDocument(userAuth)
       console.log(user);
@@ -27,17 +21,17 @@ class Application extends Component {
   }
 
   componentWillUnmount() {
-    this.unsuscribeFromFirestore();
+    this.unsuscribeFromAuth();
   }
 
   render() {
-    const { posts, user } = this.state;
+    const { user } = this.state;
 
     return (
       <main className="Application">
         <h1>Think Piece</h1>
         <Authentication user={user} />
-        <Posts posts={posts} />
+        <Posts />
       </main>
     );
   }
