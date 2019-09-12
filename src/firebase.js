@@ -1,13 +1,14 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
+import 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: "AIzaSyD1Igy6LVjWGMzBZu6y9h5S37g89K22xLc",
   authDomain: "react-blog-firebase-3817b.firebaseapp.com",
   databaseURL: "https://react-blog-firebase-3817b.firebaseio.com",
   projectId: "react-blog-firebase-3817b",
-  storageBucket: "",
+  storageBucket: "gs://react-blog-firebase-3817b.appspot.com",
   messagingSenderId: "565414903338",
   appId: "1:565414903338:web:3fa57bb2ced5946b"
 };
@@ -49,11 +50,7 @@ export const getUserDocument = async (uid) => {
   if (!uid) return null;
   try {
     // const doc = await firestore.collection('users').doc(uid);
-    const doc = await firestore.doc(`users/${uid}`).get();
-    return {
-      uid,
-      ...doc.data()
-    }
+    return firestore.doc(`users/${uid}`);
   } catch (error) {
     console.error(error.message);
   }
@@ -65,5 +62,6 @@ export const auth = firebase.auth();
 export const provider = new firebase.auth.GoogleAuthProvider();
 export const signInWithGoogle = () => auth.signInWithPopup(provider);
 export const signOut = () => auth.signOut();
+export const storage = firebase.storage();
 
 export default firebase;
