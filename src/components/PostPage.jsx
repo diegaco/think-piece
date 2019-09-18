@@ -44,6 +44,12 @@ class PostPage extends Component {
     this.unsuscribeFromComments();
   }
 
+  createComment = comment => {
+    this.commentsRef.add({
+      ...comment,
+    })
+  }
+
   render() {
     const { post, comments } = this.state;
     return (
@@ -54,7 +60,7 @@ class PostPage extends Component {
         <Comments
           comments={comments}
           postId={post && post.id}
-          onCreate={''}
+          onCreate={this.createComment}
         />
       </section>
     )
