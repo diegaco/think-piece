@@ -26,7 +26,6 @@ class UserProvider extends Component {
     this.unsuscribeFromAuth();
   }
 
-
   render() {
     const { user } = this.state;
     const { children } = this.props;
