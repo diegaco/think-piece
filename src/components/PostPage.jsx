@@ -53,7 +53,6 @@ class PostPage extends Component {
     })
   }
 
-
   render() {
     const { post, comments } = this.state;
     return (
